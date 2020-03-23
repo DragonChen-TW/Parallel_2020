@@ -49,9 +49,9 @@ int main(int argc, char const *argv[]) {
     int size;
     for (size = 100000; size <= 600000; size += 100000) {
         temp = updateTimer(&time_start, &time_end);
-    	if (my_rank == 0) {
+    	if (my_rank == 1) {
             printf("====================\n");
-    		printf("Send vector %d rounds\n", size);
+    		printf("Send vector size of %d\n", size);
 
     	}
     	// MAIN BLOCK
