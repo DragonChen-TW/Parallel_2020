@@ -4,7 +4,7 @@
 
 #include <mpi.h>
 
-#define N 100000
+#define N 600000
 
 // utils
 void randomVector(float vector[N]);
@@ -42,34 +42,43 @@ int main(int argc, char const *argv[]) {
 
 	// printf("init msg: %f %f %f\n", vector[1000], vector[1001], vector[1002]);
 
-	temp = updateTimer(&time_start, &time_end);
-	if (my_rank == 0) {
-		printf("Startup time? use %f secs.\n", temp);
-		printf("Send vector %d rounds\n", N);
-	}
+    if (my_rank == 0) {
+        printf("Startup time use %f secs.\n", temp);
+    }
 
-	// MAIN BLOCK
-	if (my_rank == 0) {
-		int i;
-		for (i = 0; i < (int)(times / 2); i++) {
-			MPI_Send(&vector, N, MPI_FLOAT, 1, i % 10, MPI_COMM_WORLD);
-			MPI_Recv(&vector, N, MPI_FLOAT, 1, i % 10 + 10, MPI_COMM_WORLD, &status);
-            printf("i=%d, rank0 recv\n", i);
-			// printf("rank 1 recv msg: %f %f %f\n", vector[1000], vector[1001], vector[1002]);
-		}
-	} else {
-		int i;
-		for (i = 0; i < (int)(times / 2); i++) {
-			MPI_Recv(&vector, N, MPI_FLOAT, 0, i % 10, MPI_COMM_WORLD, &status);
-            printf("i=%d, rank1 recv\n", i);
-			// printf("rank 1 recv msg: %f %f %f\n", vector[1000], vector[1001], vector[1002]);
-			MPI_Send(&vector, N, MPI_FLOAT, 0, i % 10 + 10, MPI_COMM_WORLD);
-		}
-	}
+    int size;
+    for (size = 100000; size <= 600000; size += 100000) {
+        temp = updateTimer(&time_start, &time_end);
+    	if (my_rank == 0) {
+            printf("====================\n");
+    		printf("Send vector %d rounds\n", size);
+
+    	}
+    	// MAIN BLOCK
+    	if (my_rank == 0) {
+    		int i;
+    		for (i = 0; i < times; i++) {
+    			MPI_Send(&vector, size, MPI_FLOAT, 1, i % 10, MPI_COMM_WORLD);
+    			MPI_Recv(&vector, size, MPI_FLOAT, 1, i % 10 + 10, MPI_COMM_WORLD, &status);
+                // printf("i=%d, rank0 recv\n", i);
+    			// printf("rank 1 recv msg: %f %f %f\n", vector[1000], vector[1001], vector[1002]);
+    		}
+    	} else {
+    		int i;
+    		for (i = 0; i < times; i++) {
+    			MPI_Recv(&vector, size, MPI_FLOAT, 0, i % 10, MPI_COMM_WORLD, &status);
+                // printf("i=%d, rank1 recv\n", i);
+    			// printf("rank 1 recv msg: %f %f %f\n", vector[1000], vector[1001], vector[1002]);
+    			MPI_Send(&vector, size, MPI_FLOAT, 0, i % 10 + 10, MPI_COMM_WORLD);
+    		}
+    	}
 
 
-	temp = updateTimer(&time_start, &time_end);
-	printf("Compute %d times use %f secs.\n", times, temp);
+    	if (my_rank == 1) {
+            temp = updateTimer(&time_start, &time_end);
+        	printf("Compute %d times use %f secs.\nAvg: %f secs.\n", times, temp, temp / times);
+        }
+    }
 
 	MPI_Finalize();
 
