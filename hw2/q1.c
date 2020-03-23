@@ -42,7 +42,8 @@ int main(int argc, char const *argv[]) {
 
 	// printf("init msg: %f %f %f\n", vector[1000], vector[1001], vector[1002]);
 
-    if (my_rank == 0) {
+    if (my_rank == 1) {
+        temp = updateTimer(&time_start, &time_end);
         printf("Startup time use %f secs.\n", temp);
     }
 
@@ -51,7 +52,7 @@ int main(int argc, char const *argv[]) {
         temp = updateTimer(&time_start, &time_end);
     	if (my_rank == 1) {
             printf("====================\n");
-    		printf("Send vector size of %d\n", size);
+    		printf("Send size %d vector %d times\n", size, times);
 
     	}
     	// MAIN BLOCK
@@ -76,7 +77,8 @@ int main(int argc, char const *argv[]) {
 
     	if (my_rank == 1) {
             temp = updateTimer(&time_start, &time_end);
-        	printf("Compute %d times use %f secs.\nAvg: %f secs.\n", times, temp, temp / times);
+        	printf("Length: %d Compute %d times\nTota: %f secs \t Avg: %f secs.\n",
+                size, times, temp, temp / times);
         }
     }
 
