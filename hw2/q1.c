@@ -26,7 +26,7 @@ int main(int argc, char const *argv[]) {
 	MPI_Status status;
 	float vector[N];
 
-	int times = 100;
+	int times = 10;
 
 	// init
 	struct timeval time_start, time_end;
@@ -59,18 +59,14 @@ int main(int argc, char const *argv[]) {
     	if (my_rank == 0) {
     		int i;
     		for (i = 0; i < times; i++) {
-    			MPI_Send(&vector, size, MPI_FLOAT, 1, i % 10, MPI_COMM_WORLD);
-    			MPI_Recv(&vector, size, MPI_FLOAT, 1, i % 10 + 10, MPI_COMM_WORLD, &status);
-                // printf("i=%d, rank0 recv\n", i);
-    			// printf("rank 1 recv msg: %f %f %f\n", vector[1000], vector[1001], vector[1002]);
+    			MPI_Send(&vector, size, MPI_FLOAT, 1, 0, MPI_COMM_WORLD);
+    			MPI_Recv(&vector, size, MPI_FLOAT, 1, 1, MPI_COMM_WORLD, &status);
     		}
     	} else {
     		int i;
     		for (i = 0; i < times; i++) {
-    			MPI_Recv(&vector, size, MPI_FLOAT, 0, i % 10, MPI_COMM_WORLD, &status);
-                // printf("i=%d, rank1 recv\n", i);
-    			// printf("rank 1 recv msg: %f %f %f\n", vector[1000], vector[1001], vector[1002]);
-    			MPI_Send(&vector, size, MPI_FLOAT, 0, i % 10 + 10, MPI_COMM_WORLD);
+    			MPI_Recv(&vector, size, MPI_FLOAT, 0, 0, MPI_COMM_WORLD, &status);
+    			MPI_Send(&vector, size, MPI_FLOAT, 0, 1, MPI_COMM_WORLD);
     		}
     	}
 
