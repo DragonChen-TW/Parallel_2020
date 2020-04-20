@@ -11,7 +11,9 @@ int main(int argc, char const *argv[]) {
 	MPI_Comm_size(MPI_COMM_WORLD, &npes);
 	MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
 
-	dims[0] = dims[1] = 4;
+	int block_num = 4;
+
+	dims[0] = dims[1] = block_num;
 	periods[0] = periods[1] = 1;
 	MPI_Cart_create(MPI_COMM_WORLD,2, dims, periods, 1, &comm_2d);
 
@@ -42,13 +44,14 @@ int main(int argc, char const *argv[]) {
 	fclose(fp);
 
 	// cut into files
-	int block_len = lenx / 4;
+	int block_len = lenx / block_num;
 	int start_i, start_j;
 	start_i = my2dcoords[0] * block_len;
 	start_j = my2dcoords[1] * block_len;
 	printf("%d %d %d\n", my_rank, start_i, start_j);
 
-	sprintf(f_name, "q2_out/lenna%d%d.pgm", my2dcoords[0], my2dcoords[1]);
+	sprintf(f_name, "q2_out/lenna%dx%d-%d%d.pgm",block_num, block_num,
+		my2dcoords[0], my2dcoords[1]);
 	fp = fopen(f_name, "w");
 	fprintf(fp, "%s\n%d %d\n%d\n", mode, block_len, block_len, max_value);
 
