@@ -38,7 +38,8 @@ int main(int argc, char const *argv[]) {
     // count how many task be assigned to one core
     int test_times = (int)(total_times / npes);
     test_times = total_times % npes ? test_times + 1 : test_times;
-    printf("Rank: %d, Size: %d\n", my_rank, test_times);
+    if (my_rank == 0)
+        printf("Rank: %d, Size: %d\n", my_rank, test_times);
 
 	int i, j;
 	float temp[test_times];
@@ -62,7 +63,7 @@ int main(int argc, char const *argv[]) {
 		}
 
 		t_temp = updateTimer(&time_start, &time_end);
-		printf("Cost: %.4f secs.\n", t_temp);
+		printf("Cost: %f secs.\n", t_temp);
 	} else {
 		MPI_Gather(temp, test_times, MPI_FLOAT, NULL, 0, MPI_FLOAT, 0, MPI_COMM_WORLD);
 	}
