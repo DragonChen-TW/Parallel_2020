@@ -5,7 +5,7 @@ c_mpi_run:
 c_arr:
 	gcc -o c_arr.out ./q5_array.c
 c_thread:
-	gcc -o c_thread.out ./q5_thread.c
+	gcc -o c_thread.out ./q5_thread.c -lpthread
 py_mpi:
 	mpiexec -n 50 pipenv run python py_mpi.py
 py_arr:
