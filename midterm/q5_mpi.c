@@ -58,9 +58,9 @@ int main(int argc, char const *argv[]) {
 
 		MPI_Gather(temp, test_times, MPI_FLOAT, results, test_times, MPI_FLOAT, 0, MPI_COMM_WORLD);
 
-		for (i = 0; i < total_times; i++) {
-			printf("%d %f\n", i, results[i]);
-		}
+		// for (i = 0; i < total_times; i++) {
+		// 	printf("%d %f\n", i, results[i]);
+		// }
 
 		t_temp = updateTimer(&time_start, &time_end);
 		printf("Cost: %f secs.\n", t_temp);

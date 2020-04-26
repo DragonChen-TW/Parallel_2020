@@ -38,9 +38,9 @@ int main(int argc, char const *argv[]) {
 	}
 
 	// Show Results
-	for (i = 0; i < test_times; i++) {
-		printf("%d %f\n", i, temp[i]);
-	}
+	// for (i = 0; i < test_times; i++) {
+	// 	printf("%d %f\n", i, temp[i]);
+	// }
 
 	t_temp = updateTimer(&time_start, &time_end);
 	printf("Cost: %f secs.\n", t_temp);

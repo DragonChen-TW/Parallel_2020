@@ -57,9 +57,9 @@ int main(int argc, char const *argv[]) {
 		pthread_join(task_ids[i], NULL);
 	}
 
-	for (i = 0; i < test_times; i++) {
-		printf("%d %f\n", i, results[i]);
-	}
+	// for (i = 0; i < test_times; i++) {
+	// 	printf("%d %f\n", i, results[i]);
+	// }
 
 	t_temp = updateTimer(&time_start, &time_end);
 	printf("Cost: %f secs.\n", t_temp);
